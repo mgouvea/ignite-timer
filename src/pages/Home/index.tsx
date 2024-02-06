@@ -17,13 +17,20 @@ const newCicleFormSchema = zod.object({
   minutesAmount: zod.number().min(5).max(60),
 });
 
+type NewCicleFormData = zod.infer<typeof newCicleFormSchema>;
+
 export function Home() {
-  const { register, handleSubmit, watch } = useForm({
+  const { register, handleSubmit, watch, reset } = useForm<NewCicleFormData>({
     resolver: zodResolver(newCicleFormSchema),
+    defaultValues: {
+      task: '',
+      minutesAmount: 0,
+    },
   });
 
-  function handleCreateNewCicle(data: any) {
+  function handleCreateNewCicle(data: NewCicleFormData) {
     console.log(data);
+    reset();
   }
 
   const task = watch('task');
